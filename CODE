@@ -1,0 +1,69 @@
+import sqlite3
+import pandas as pd
+import matplotlib.pyplot as plt 
+
+conn = sqlite3.connect('sales.db')
+cursor = conn.cursor()
+
+
+# Adding the table (in case it does not already exist in the database)
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS sales_1 (
+    name TEXT, 
+    quantity INTEGER, 
+    price REAL, 
+    sale_date TEXT
+)
+''')
+
+
+# Adding more rows in the already created sales_1 database table
+sample_data = [
+    ('Bluetooth Speaker', 20, 85.00, '2020-01-01 10:00:00'),
+    ('Laptop Stand', 15, 33.99, '2020-01-01 11:00:00'),
+    ('Webcam', 18, 49.95, '2020-01-01 12:00:00'),
+    ('Office Chair', 10, 120.00, '2020-01-01 13:00:00'),
+    ('Monitor', 8, 210.00, '2020-01-01 14:00:00'), 
+    ('Notebook', 22, 10.50, '2020-01-01 05:00:00'),
+    ('Gaming Mouse', 35, 45.99, '2020-01-01 06:00:00'),
+    ('Travel Bag', 12, 59.00, '2020-01-01 07:00:00'),
+    ('Keyboard', 27, 32.10, '2020-01-01 08:00:00'),
+    ('Smartphone Case', 40, 15.75, '2020-01-01 09:00:00'), 
+    ('White Mug', 38, 1.71, '2020-01-01 00:00:00'),
+    ('White Mug', 18, 41.25, '2020-01-01 01:00:00'),
+    ('Headphones', 49, 29.11, '2020-01-01 02:00:00'),
+    ('Desk Lamp', 14, 76.68, '2020-01-01 03:00:00'),
+    ('USB Cable', -30, -68.11, '2020-01-01 04:00:00')
+]
+cursor.executemany("INSERT INTO sales_1 (name, quantity, price, sale_date) VALUES (?,?,?,?)", sample_data)
+conn.commit()
+
+
+# Creating queries for total quantity and revenue per product  
+query = """
+SELECT name AS product, 
+SUM(quantity) AS total_quantity,
+SUM(quantity * price) AS revenue
+FROM sales_1
+GROUP BY name
+"""
+
+
+# Displaying the result 
+df = pd.read_sql_query(query, conn)
+print("Sales Summary: ")
+print(df)
+
+
+# Plotting the bar chart
+df.plot(kind = 'bar', x = 'product', y = 'revenue', legend = False)
+plt.title('Revenue by Product')
+plt.xlabel('Product')
+plt.ylabel('Revenue')
+plt.savefig('sales_chart.png')
+plt.show()
+
+
+# Close the connection 
+conn.close()
+
