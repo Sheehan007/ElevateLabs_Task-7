@@ -1,0 +1,22 @@
+# Displaying the Initial report made from Python using SQL queries
+Sales Summary: 
+              product  total_quantity   revenue
+0   Bluetooth Speaker             120  10200.00
+1           Desk Lamp              14   1073.52
+2        Gaming Mouse             140   6438.60
+3          Headphones              49   1426.39
+4            Keyboard             108   3466.80
+5        Laptop Stand              90   3059.10
+6             Monitor              48  10080.00
+7            Notebook              88    924.00
+8        Office Chair              60   7200.00
+9     Smartphone Case             160   2520.00
+10         Travel Bag              48   2832.00
+11          USB Cable             -30   2043.30
+12             Webcam             108   5394.60
+13          White Mug              56    807.48
+
+
+
+# Displaying the bar chart 
+[Visualization has been shared in the main branch as "sales_chart.png"]
